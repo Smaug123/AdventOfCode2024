@@ -15,7 +15,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
       projectFile = "./AdventOfCode2024.App/AdventOfCode2024.App.fsproj";
       testProjectFile = "./AdventOfCode2024.Test/AdventOfCode2024.Test.fsproj";
-      pname = "AdventOfCode2024";
+      pname = "AdventOfCode2024.App";
       dotnet-sdk = pkgs.dotnetCorePackages.sdk_9_0;
       dotnet-runtime = pkgs.dotnetCorePackages.runtime_9_0;
       version = "0.0.1";
