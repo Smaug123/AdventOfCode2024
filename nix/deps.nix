@@ -7,6 +7,16 @@
     hash = "sha256-4tRdYf+/Q1iedx+DDuIKVGlIWQdr6erM51VdKzZkhCs=";
   })
   (fetchNuGet {
+    pname = "FSharp.Core";
+    version = "5.0.2";
+    hash = "sha256-YOoosLEiszPsOOaNAkWhFGU04JJKDOFVoA/ggrZMN10=";
+  })
+  (fetchNuGet {
+    pname = "FsUnit";
+    version = "6.0.1";
+    hash = "sha256-vka/aAgWhDCl5tu+kgO7GtSaHOOvlSaWxG+tExwGXpI=";
+  })
+  (fetchNuGet {
     pname = "Microsoft.CodeCoverage";
     version = "17.12.0";
     hash = "sha256-lGjifppD0OBMBp28pjUfPipaeXg739n8cPhtHWoo5RE=";
@@ -30,6 +40,11 @@
     pname = "Newtonsoft.Json";
     version = "13.0.1";
     hash = "sha256-K2tSVW4n4beRPzPu3rlVaBEMdGvWSv/3Q1fxaDh4Mjo=";
+  })
+  (fetchNuGet {
+    pname = "NUnit";
+    version = "4.0.1";
+    hash = "sha256-jd1CD5nHVXkpvBNpVDJcJyfTggCHLyDBySVSvtrA8Uk=";
   })
   (fetchNuGet {
     pname = "NUnit";

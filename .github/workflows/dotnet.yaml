@@ -46,7 +46,7 @@ jobs:
       - name: Build
         run: nix build
       - name: Run app
-        run: ./result/bin/AdventOfCode2024.App
+        run: ./result/bin/AdventOfCode2024.App inputs
 
   check-dotnet-format:
     runs-on: ubuntu-latest
