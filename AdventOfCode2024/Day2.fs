@@ -1,7 +1,6 @@
 ﻿namespace AdventOfCode2024
 
 open System
-open System.Collections.Generic
 open System.Globalization
 
 [<RequireQualifiedAccess>]
