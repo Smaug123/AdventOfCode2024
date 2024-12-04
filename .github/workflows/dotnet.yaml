@@ -1,0 +1,111 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        config:
+          - Release
+          - Debug
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore --configuration ${{matrix.config}}
+    - name: Test
+      run: dotnet test --no-build --verbosity normal --configuration ${{matrix.config}}
+
+  run-app:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Nix
+        uses: cachix/install-nix-action@V28
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Build
+        run: nix build
+      - name: Run app
+        run: ./result/bin/AdventOfCode2024.App
+
+  check-dotnet-format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: cachix/install-nix-action@V28
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Run Fantomas
+        run: nix run .#fantomas -- -r --check .
+
+  check-nix-format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: cachix/install-nix-action@V28
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Run Alejandra
+        run: nix develop --command alejandra --check .
+
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout
+      - name: Install Nix
+        uses: cachix/install-nix-action@V28
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Run ShellCheck
+        run: nix develop --command bash -c "find . -type f -name '*.sh' -or -name 'pre-push' | xargs shellcheck"
+
+  linkcheck:
+    name: Check links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Install Nix
+        uses: cachix/install-nix-action@V28
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Run link checker
+        run: nix develop --command markdown-link-check README.md
+
+  all-required-checks-complete:
+    if: ${{ always() }}
+    needs: [check-dotnet-format, check-nix-format, build, shellcheck, linkcheck, run-app]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Smaug123/all-required-checks-complete-action@05b40a8c47ef0b175ea326e9abb09802cb67b44e
+        with:
+          needs-context: ${{ toJSON(needs) }}
