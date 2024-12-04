@@ -14,4 +14,8 @@ module Program =
             let input = input inputFolder 1
             Run.day1 true input
 
+        do
+            let input = input inputFolder 2
+            Run.day2 true input
+
         0
