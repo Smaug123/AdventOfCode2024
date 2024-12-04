@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <Compile Include="TestDay1.fs" />
+        <Compile Include="TestDay2.fs" />
         <EmbeddedResource Include="..\inputs\day*.txt" />
     </ItemGroup>
 
