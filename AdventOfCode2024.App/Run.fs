@@ -28,3 +28,15 @@ module Run =
 
             if shouldWrite then
                 printfn "%i" output
+
+    let day3 (partTwo : bool) (input : string) =
+        if not partTwo then
+            let output = Day3.part1 input
+
+            if shouldWrite then
+                printfn "%i" output
+        else
+            let output = Day3.part2 input
+
+            if shouldWrite then
+                printfn "%i" output
